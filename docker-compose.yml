@@ -1,0 +1,35 @@
+services:
+  postgres:
+    container_name: postgres-sql-bsn
+    image: postgres
+    environment:
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+      PGDATA: /var/lib/postgresql/data  # where the data stored
+      POSTGRES_DB: book_social_network  # db created automatically
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - 5432:5432 # public:container_port
+    networks:
+      - spring-demo # all the containers in the same network
+    restart: unless-stopped # if the container stop it will be restarted
+  mail-dev: # in real-life we need an SMTP server for mailing, but we are going to use it as a container
+    container_name: mail-dev-bsn
+    image: maildev/maildev
+    ports:
+      - 1080:1080
+      - 1025:1025 # for spring boot
+
+
+# create the network
+networks:
+  spring-demo:
+    driver: bridge
+
+# create the volume
+volumes:
+  postgres:
+    driver: local
+
+# cmd: docker-compose up
