@@ -1,41 +1,97 @@
-# when we have two application.yml, the application-something.yml will inherit all the properties from the application.yml
-# then u can override what need to be override
+#spring:
+#  datasource:
+#    url: jdbc:postgresql://localhost:5432/book_social_network
+#    username: username
+#    password: password
+#    driver-class-name: org.postgresql.Driver
+#  jpa:
+#    hibernate:
+#      ddl-auto: create
+#    show-sql: false
+#    properties:
+#      hibernate:
+#        format_sql: true
+#    database: postgresql
+#    database-platform: org.hibernate.dialect.PostgreSQLDialect
+#  mail:
+#    host: localhost
+#    port: 1025
+#    username: ali
+#    password: ali
+#    properties:
+#      mail:
+#        smtp:
+#          trust: "*"
+#        auth: true
+#        starttls:
+#          enabled: true
+#        connectiontimeout: 5000
+#        timeout: 3000
+#        writetimeout: 5000
+#
+#
+#application:
+#  security:
+#    jwt:
+#      secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+#      expiration: 86400000 # a day
+#      refresh-token:
+#        expiration: 604800000 # 7 days
+#  mailing:
+#    frontend:
+#      activation-url: http://localhost:4200/activate-account?token=%s
+#server:
+#  port: 8088
 
-# connection to database configuration
+
+
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/book_social_network # will be created in the container automatically
-    username: username
-    password: password
-    driver-class-name: org.postgresql.Driver
+    url: jdbc:mysql://localhost:3306/book_social_network
+    username: root  # Default MySQL user in XAMPP
+    password:       # Leave empty if no password is set
   jpa:
     hibernate:
-      ddl-auto: update
-    show-sql: false
+      ddl-auto: update  # Use 'create' if you want to recreate the schema on every restart
+    show-sql: true
     properties:
       hibernate:
-        format_sql: true  # it works with show-sql
-    database: postgresql
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-  mail: # SMTP server host
+        format_sql: true
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQLDialect
+  mail:
     host: localhost
     port: 1025
-    username: othmane
-    password: othmane
+    username: ali
+    password: ali
     properties:
       mail:
         smtp:
           trust: "*"
         auth: true
         starttls:
-          enable: true
+          enabled: true
         connectiontimeout: 5000
-        timeout: 3000 # 3s
+        timeout: 3000
         writetimeout: 5000
 
-# security key+expiration time for token
 application:
   security:
     jwt:
-      secret-key: 404E635266556A586E32723575753872F413F4438472B4B6250645367566B5970
-      expiration: 8640000
+      secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+      expiration: 86400000 # a day
+      refresh-token:
+        expiration: 604800000 # 7 days
+  mailing:
+    frontend:
+      activation-url: http://localhost:4200/activate-account?token=%s
+
+server:
+  port: 8088
+
+
+
+
+
+
+
