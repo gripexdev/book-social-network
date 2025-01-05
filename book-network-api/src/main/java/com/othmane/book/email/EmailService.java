@@ -49,7 +49,7 @@ public class EmailService {
         properties.put("confirmationUrl", confirmationUrl);
         Context context = new Context();
         context.setVariables(properties);
-        helper.setFrom("contact@aliboucoding.com");
+        helper.setFrom("contact@gripexdev.com");
         helper.setTo(to);
         helper.setSubject(subject);
         String template = templateEngine.process(templateName, context);
