@@ -30,4 +30,12 @@ public class AuthenticationController {
         return ResponseEntity.accepted().build();
     }
 
+    // to test it => user.enabled = true manually
+    @PostMapping("/authenticate")
+    public ResponseEntity<AuthenticationResponse> authenticate(
+            @RequestBody @Valid AuthenticationRequest request
+    ) {
+        return ResponseEntity.ok(service.authenticate(request));
+    }
+
 }
