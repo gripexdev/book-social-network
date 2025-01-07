@@ -5,7 +5,7 @@ spring:
     password:       # Leave empty if no password is set
   jpa:
     hibernate:
-      ddl-auto: update  # Use 'create' if you want to recreate the schema on every restart
+      ddl-auto: create-drop  # Use 'create' if you want to recreate the schema on every restart
     show-sql: true
     properties:
       hibernate:
