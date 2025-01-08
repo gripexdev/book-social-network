@@ -1,13 +1,9 @@
 package com.othmane.book.user;
 
+import com.othmane.book.book.Book;
+import com.othmane.book.history.BookTransactionHistory;
 import com.othmane.book.role.Role;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,8 +42,18 @@ public class User implements UserDetails, Principal {
     private String password;
     private boolean accountLocked;
     private boolean enabled;
+
     @ManyToMany(fetch = EAGER)
     private List<Role> roles;
+
+    // user has many books
+    @OneToMany(mappedBy = "owner")
+    private List<Book> books;
+
+    // The association table
+    @OneToMany(mappedBy = "user")
+    private List<BookTransactionHistory> histories;
+
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdDate;
