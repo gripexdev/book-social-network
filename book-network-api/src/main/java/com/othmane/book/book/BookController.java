@@ -33,7 +33,7 @@ public class BookController {
         return ResponseEntity.ok(service.findById(bookId));
     }
 
-    // Get all Books + Pagination REST API
+    // Get all displayable books + Pagination REST API
     @GetMapping
     public ResponseEntity<PageResponse<BookResponse>> findAllBooks(
             @RequestParam(name = "page", defaultValue = "0", required = false) int page,    // page number
@@ -41,5 +41,15 @@ public class BookController {
             Authentication connectedUser    // to get all the books except the current user's books
     ) {
         return ResponseEntity.ok(service.findAllBooks(page, size, connectedUser));
+    }
+
+    // Get all books by owner REST API
+    @GetMapping("/owner")
+    public ResponseEntity<PageResponse<BookResponse>> findAllBooksByOwner(
+            @RequestParam(name = "page", defaultValue = "0", required = false) int page,
+            @RequestParam(name = "size", defaultValue = "10", required = false) int size,
+            Authentication connectedUser
+    ) {
+        return ResponseEntity.ok(service.findAllBooksByOwner(page, size, connectedUser));
     }
 }
