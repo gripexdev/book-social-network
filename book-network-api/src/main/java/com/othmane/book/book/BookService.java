@@ -1,6 +1,7 @@
 package com.othmane.book.book;
 
 import com.othmane.book.common.PageResponse;
+import com.othmane.book.exception.OperationNotPermittedException;
 import com.othmane.book.history.BookTransactionHistory;
 import com.othmane.book.history.BookTransactionHistoryRepository;
 import com.othmane.book.user.User;
@@ -14,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 import static com.othmane.book.book.BookSpecification.withOwnerId;
 
@@ -118,6 +120,21 @@ public class BookService {
                 allBorrowedBooks.isFirst(),
                 allBorrowedBooks.isLast()
         );
+    }
+
+    // update books shareable status
+    public Integer updateShareableStatus(Integer bookId, Authentication connectedUser) {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new EntityNotFoundException("No book found with ID:: " + bookId));
+        User user = ((User) connectedUser.getPrincipal());
+        // only the owner can update the book
+        if (!Objects.equals(book.getOwner().getBooks(), user.getId())) {
+            throw new OperationNotPermittedException("You cannot update others books shareable status");
+        }
+        // inverse the value of the status
+        book.setShareable(!book.isShareable());
+        bookRepository.save(book);
+        return bookId;
     }
 }
 
