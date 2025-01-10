@@ -1,5 +1,6 @@
 package com.othmane.book.book;
 
+import com.othmane.book.history.BookTransactionHistory;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -32,6 +33,19 @@ public class BookMapper {
                 .owner(book.getOwner().fullName())
                 // todo - implement file upload
                 //.cover()
+                .build();
+    }
+
+    // map BookTransactionHistory to BorrowedBookResponse
+    public BorrowedBookResponse toBorrowedBookResponse(BookTransactionHistory history) {
+        return BorrowedBookResponse.builder()
+                .id(history.getBook().getId())
+                .title(history.getBook().getTitle())
+                .authorName(history.getBook().getAuthorName())
+                .isbn(history.getBook().getIsbn())
+                .rate(history.getBook().getRate())
+                .returned(history.isReturned())
+                .returnApproved(history.isReturnApproved())
                 .build();
     }
 }

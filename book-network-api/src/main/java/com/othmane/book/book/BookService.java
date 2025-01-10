@@ -1,6 +1,8 @@
 package com.othmane.book.book;
 
 import com.othmane.book.common.PageResponse;
+import com.othmane.book.history.BookTransactionHistory;
+import com.othmane.book.history.BookTransactionHistoryRepository;
 import com.othmane.book.user.User;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,8 @@ import static com.othmane.book.book.BookSpecification.withOwnerId;
 public class BookService {
 
     private final BookRepository bookRepository;
+
+    private final BookTransactionHistoryRepository transactionHistoryRepository;
 
     private final BookMapper bookMapper;
 
@@ -75,6 +79,25 @@ public class BookService {
                 books.getTotalPages(),
                 books.isFirst(),
                 books.isLast()
+        );
+    }
+
+    // get all borrowed books by user
+    public PageResponse<BorrowedBookResponse> findAllBorrowedBooks(int page, int size, Authentication connectedUser) {
+        User user = ((User) connectedUser.getPrincipal());
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
+        Page<BookTransactionHistory> allBorrowedBooks = transactionHistoryRepository.findAllBorrowedBooks(pageable, user.getId());
+        List<BorrowedBookResponse> booksResponse = allBorrowedBooks.stream()
+                .map(bookMapper::toBorrowedBookResponse)
+                .toList();
+        return new PageResponse<>(
+                booksResponse,
+                allBorrowedBooks.getNumber(),
+                allBorrowedBooks.getSize(),
+                allBorrowedBooks.getTotalElements(),
+                allBorrowedBooks.getTotalPages(),
+                allBorrowedBooks.isFirst(),
+                allBorrowedBooks.isLast()
         );
     }
 }
