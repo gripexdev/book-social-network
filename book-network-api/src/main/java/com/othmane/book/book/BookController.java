@@ -1,5 +1,6 @@
 package com.othmane.book.book;
 
+import com.othmane.book.common.PageResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ public class BookController {
 
     private final BookService service;
 
+    // Save book REST API
     @PostMapping
     public ResponseEntity<Integer> saveBook(
             @Valid @RequestBody BookRequest request,
@@ -23,10 +25,21 @@ public class BookController {
         return ResponseEntity.ok(service.save(request, connectedUser));
     }
 
+    // Get Book by id REST API
     @GetMapping("{book-id}")
     public ResponseEntity<BookResponse> findBookById(
             @PathVariable("book-id") Integer bookId
     ) {
         return ResponseEntity.ok(service.findById(bookId));
+    }
+
+    // Get all Books + Pagination REST API
+    @GetMapping
+    public ResponseEntity<PageResponse<BookResponse>> findAllBooks(
+            @RequestParam(name = "page", defaultValue = "0", required = false) int page,    // page number
+            @RequestParam(name = "size", defaultValue = "10", required = false) int size,   // number of records retrieved
+            Authentication connectedUser    // to get all the books except the current user's books
+    ) {
+        return ResponseEntity.ok(service.findAllBooks(page, size, connectedUser));
     }
 }
