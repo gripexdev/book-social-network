@@ -1,5 +1,6 @@
 package com.othmane.book.book;
 
+import com.othmane.book.file.FileUtils;
 import com.othmane.book.history.BookTransactionHistory;
 import org.springframework.stereotype.Service;
 
@@ -31,8 +32,7 @@ public class BookMapper {
                 .archived(book.isArchived())
                 .shareable(book.isShareable())
                 .owner(book.getOwner().fullName())
-                // todo - implement file upload
-                //.cover()
+                .cover(FileUtils.readFileFromLocation(book.getBookCover()))
                 .build();
     }
 
