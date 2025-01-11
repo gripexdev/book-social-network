@@ -30,6 +30,7 @@ public class Book extends BaseEntity {
     // small resume about the book
     private String synopsis;
 
+    // path to the book cover
     private String bookCover;
 
     private boolean archived;

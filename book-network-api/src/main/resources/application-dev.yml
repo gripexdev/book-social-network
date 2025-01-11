@@ -38,6 +38,9 @@ application:
   mailing:
     frontend:
       activation-url: http://localhost:4200/activate-account?token=%s
+  file:
+    uploads:
+      photos-output-path: ./uploads # where to store files
 
 server:
   port: 8088

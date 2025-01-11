@@ -2,6 +2,7 @@ package com.othmane.book.book;
 
 import com.othmane.book.common.PageResponse;
 import com.othmane.book.exception.OperationNotPermittedException;
+import com.othmane.book.file.FileStorageService;
 import com.othmane.book.history.BookTransactionHistory;
 import com.othmane.book.history.BookTransactionHistoryRepository;
 import com.othmane.book.user.User;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Objects;
@@ -28,6 +30,8 @@ public class BookService {
     private final BookTransactionHistoryRepository transactionHistoryRepository;
 
     private final BookMapper bookMapper;
+
+    private final FileStorageService fileStorageService;
 
     // add Book method
     public Integer save(BookRequest request, Authentication connectedUser) {
@@ -232,6 +236,16 @@ public class BookService {
 
         bookTransactionHistory.setReturnApproved(true);
         return transactionHistoryRepository.save(bookTransactionHistory).getId();
+    }
+
+    // book cover picture upload
+    public void uploadBookCoverPicture(MultipartFile file, Authentication connectedUser, Integer bookId) {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new EntityNotFoundException("No book found with ID:: " + bookId));
+        User user = ((User) connectedUser.getPrincipal());
+        var bookCover = fileStorageService.saveFile(file, user.getId());
+        book.setBookCover(bookCover);
+        bookRepository.save(book);
     }
 }
 
