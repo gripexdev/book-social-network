@@ -210,5 +210,28 @@ public class BookService {
         return transactionHistoryRepository.save(bookTransactionHistory).getId();
     }
 
+    // approve return book
+    public Integer approveReturnBorrowedBook(Integer bookId, Authentication connectedUser) {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new EntityNotFoundException("No book found with ID:: " + bookId));
+
+        // check if book archived or not shareable (not permitted)
+        if (book.isArchived() || !book.isShareable()) {
+            throw new OperationNotPermittedException("The requested book is archived or not shareable");
+        }
+        User user = ((User) connectedUser.getPrincipal());
+        // check if user who wants to approve return the book is the owner
+        if (Objects.equals(book.getOwner().getId(), user.getId())) {
+            throw new OperationNotPermittedException("You cannot borrow or return your own book");
+        }
+
+        // check if connected user is the owner of the book
+        BookTransactionHistory bookTransactionHistory = transactionHistoryRepository.findByBookIdAndOwnerId(bookId, user.getId())
+                .orElseThrow(() -> new OperationNotPermittedException("The book is not returned yet. You cannot approve its return"));
+
+
+        bookTransactionHistory.setReturnApproved(true);
+        return transactionHistoryRepository.save(bookTransactionHistory).getId();
+    }
 }
 
