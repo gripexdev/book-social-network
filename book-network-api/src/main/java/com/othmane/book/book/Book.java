@@ -37,6 +37,7 @@ public class Book extends BaseEntity {
 
     private boolean shareable;
 
+
     // the owner of the book (one book has one owner) - (user has many books)
     @ManyToOne
     @JoinColumn(name = "owner_id")
