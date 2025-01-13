@@ -3,6 +3,8 @@ package com.othmane.book.feedback;
 import com.othmane.book.book.Book;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 public class FeedbackMapper {
 
@@ -17,6 +19,16 @@ public class FeedbackMapper {
                         .archived(false) // Not required and has no impact :: just to satisfy lombok
                         .build()
                 )
+                .build();
+    }
+
+    // map Feedback to FeedbackResponse
+    public FeedbackResponse toFeedbackResponse(Feedback feedback, Integer id) {
+        return FeedbackResponse.builder()
+                .note(feedback.getNote())
+                .comment(feedback.getComment())
+                // return true if feedback given vy the connected user
+                .ownFeedback(Objects.equals(feedback.getCreatedBy(), id))
                 .build();
     }
 }
