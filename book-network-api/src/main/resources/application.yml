@@ -7,6 +7,6 @@ spring:
 springdoc:  # for openapi
   default-produces-media-type: application/json
 
-#server:
-#  servlet:
-#    context-path: /api/v1/ # api name
+server:
+  servlet:
+    context-path: /api/v1/ # api name

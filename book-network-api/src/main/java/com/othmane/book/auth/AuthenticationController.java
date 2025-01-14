@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("api/v1/auth")
+//@RequestMapping("api/v1/auth") // for postman
+@RequestMapping("auth") // for openapi
 @RequiredArgsConstructor
 @Tag(name = "Authentication")
 public class AuthenticationController {

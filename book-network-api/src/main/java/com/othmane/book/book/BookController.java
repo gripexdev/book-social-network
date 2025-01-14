@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("api/v1/books")
+//@RequestMapping("api/v1/books")   // for postman
+@RequestMapping("books") // for open api
 @RequiredArgsConstructor
 @Tag(name = "Book")
 public class BookController {
