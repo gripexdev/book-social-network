@@ -33,6 +33,10 @@ export class BookListComponent implements OnInit{
     }).subscribe({
       next: (books) => {
         this.bookResponse = books;
+        console.log(books);
+      },
+      error: (error) => {
+        console.error(error);
       }
     })
   }

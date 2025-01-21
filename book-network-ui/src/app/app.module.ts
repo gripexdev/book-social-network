@@ -3,12 +3,14 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpClient, provideHttpClient } from '@angular/common/http';
+import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import { LoginComponent } from './pages/login/login.component';
 import {FormsModule} from "@angular/forms";
 import { RegisterComponent } from './pages/register/register.component';
 import { ActivateAccountComponent } from './pages/activate-account/activate-account.component';
 import {CodeInputModule} from 'angular-code-input';
+import { HttpTokenInterceptor } from './services/interceptor/http-token.interceptor';
 
 
 @NgModule({
@@ -25,8 +27,13 @@ import {CodeInputModule} from 'angular-code-input';
         CodeInputModule
     ],
   providers: [
-    provideHttpClient(withInterceptorsFromDi()),
-    HttpClient
+    provideHttpClient(),
+    HttpClient,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpTokenInterceptor,
+      multi: true
+    },
   ],
   bootstrap: [AppComponent]
 })
